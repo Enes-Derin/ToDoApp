@@ -1,7 +1,6 @@
 package com.enesderin.todoapp.dto;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ToDoCreateRequest {
 
+    @NotBlank(message = "{title.notblank}")
     private String title;
+    @NotBlank(message = "{description.notblank}")
+    private String description;
 
 }
