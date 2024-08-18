@@ -1,10 +1,13 @@
 package com.enesderin.todoapp.service;
 
+import com.enesderin.todoapp.core.Messages;
 import com.enesderin.todoapp.dto.user.CreateUserRequest;
 import com.enesderin.todoapp.dto.user.UpdateUserRequest;
+import com.enesderin.todoapp.exception.NotFoundException;
 import com.enesderin.todoapp.model.User;
 import com.enesderin.todoapp.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +17,8 @@ public class UserService {
     private UserRepository userRepository;
 
     public User getUser(Long id){
-        return userRepository.findById(id).orElse(null);
+        String message= Messages.getMessageForLocale("todo.user.not.found", LocaleContextHolder.getLocale());
+        return userRepository.findById(id).orElseThrow(()-> new NotFoundException(message));
     }
 
     public void save(CreateUserRequest createUserRequest) {
@@ -27,7 +31,8 @@ public class UserService {
 
 
     public void update(Long id,UpdateUserRequest updateUserRequest) {
-        User user = this.userRepository.findById(id).orElse(null);
+        String message= Messages.getMessageForLocale("todo.user.not.found", LocaleContextHolder.getLocale());
+        User user = this.userRepository.findById(id).orElseThrow(()-> new NotFoundException(message));
         user.setUsername(updateUserRequest.getUsername());
         user.setEmail(updateUserRequest.getEmail());
         user.setPassword(updateUserRequest.getPassword());
@@ -35,7 +40,8 @@ public class UserService {
     }
 
     public void delete(Long id) {
-        this.userRepository.delete(this.userRepository.findById(id).orElse(null));
+        String message = Messages.getMessageForLocale("todo.user.not.found", LocaleContextHolder.getLocale());
+        this.userRepository.delete(this.userRepository.findById(id).orElseThrow(()-> new NotFoundException(message)));
     }
 
 }
